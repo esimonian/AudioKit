@@ -51,7 +51,6 @@ class PlaygroundView: AKPlaygroundView {
             reverb.feedback = sliderValue
             }
         addSubview(feedbackSlider!)
-
         let presets = ["Short Tail", "Low Ringing Tail"]
         addSubview(AKPresetLoaderView(presets: presets) { preset in
             switch preset {
