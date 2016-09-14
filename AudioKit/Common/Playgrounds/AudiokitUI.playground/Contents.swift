@@ -29,7 +29,7 @@ path.moveToPoint(CGPointMake(50, 100))
 path.addLineToPoint(CGPointMake(150, 100))
 UIColor.orangeColor().setStroke()
 path.stroke()
-let view = UIView(...)
+container.su
 
 XCPlaygroundPage.currentPage.liveView = container
 

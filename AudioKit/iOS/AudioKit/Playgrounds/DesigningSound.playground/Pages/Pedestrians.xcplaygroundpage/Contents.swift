@@ -20,7 +20,11 @@ let generator = AKOperationGenerator() { _ in
     // scale the volume
     return crossingSignal * 0.2
 }
-let tracker = AKFrequencyTracker(generator)
+
+var mixer = AKMixer(generator)
+
+let tracker = AKFrequencyTracker(mixer)
+
 AudioKit.output = tracker
 AudioKit.start()
 
@@ -30,12 +34,15 @@ class PlaygroundView: AKPlaygroundView {
     
     var trackedAmplitudeSlider: AKPropertySlider?
     var trackedFrequencySlider: AKPropertySlider?
+    var trackedRateSlider: AKPropertySlider?
     
     override func setup() {
         
         AKPlaygroundLoop(every: 0.1) {
             self.trackedAmplitudeSlider?.value = tracker.amplitude
             self.trackedFrequencySlider?.value = tracker.frequency
+            
+            
         }
         
         addTitle("Visualize Pedistrian Sound")
@@ -50,6 +57,15 @@ class PlaygroundView: AKPlaygroundView {
         }
         addSubview(trackedAmplitudeSlider!)
         
+        addSubview(AKPropertySlider(
+            property: "Rate",
+            format: "%0.3f",
+            value: 0, maximum: 0.55,
+            color: AKColor.greenColor()
+        ) { sliderValue in
+            
+            })
+        
         trackedFrequencySlider = AKPropertySlider(
             property: "Tracked Frequency",
             format: "%0.3f",
@@ -60,8 +76,17 @@ class PlaygroundView: AKPlaygroundView {
         }
         addSubview(trackedFrequencySlider!)
         
+        //amplitude
         addSubview(AKRollingOutputPlot.createView(width: 440, height: 300))
         
+        //FFT
+        let plot = AKNodeFFTPlot(mixer, frame: CGRect(x: 0, y: 0, width: 500, height: 300))
+        plot.shouldFill = true
+        plot.shouldMirror = false
+        plot.shouldCenterYAxis = false
+        plot.color = AKColor.redColor()
+        
+        addSubview(plot)
         
     }
 }
