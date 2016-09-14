@@ -17,7 +17,7 @@ class PlaygroundView: AKPlaygroundView, AKKeyboardDelegate {
 
         addTitle("ADSR Envelope")
 
-        let adsrView = AKADSRView() {
+        let adsrView = AKADSRView(node: fmWithADSR) {
             att, dec, sus, rel in
             fmWithADSR.attackDuration = att
             fmWithADSR.decayDuration = dec
